@@ -67,7 +67,8 @@ Each successful workflow run produces:
   * `receipt.sha256`
   * `receipt.pdf`
 
-**Latest successful demo proof:** `<receipt_url>`
+ * Latest successful demo proof: `<https://api.getintegrityapi.com/verify/ce2e253e-1b97-426e-b4b9-85a97e70a4a1>`
+   
 ---
 
 ## Verification model
