@@ -1,4 +1,4 @@
-# Proof of Publish Demo
+# Proof of Publish Demo (TEST)
 
 This repository demonstrates how to use `GetIntegrityAPI/proof-of-publish@v1` in a separate consumer GitHub repository.
 
