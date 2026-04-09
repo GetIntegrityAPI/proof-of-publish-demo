@@ -1,0 +1,67 @@
+name: Publish Receipt Demo
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: read
+
+jobs:
+  publish-proof:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Generate Publish Receipt
+        id: publish
+        uses: GetIntegrityAPI/proof-of-publish@v1
+        with:
+          api_key: ${{ secrets.GI_API_KEY }}
+
+      - name: Show Verification Receipt
+        shell: bash
+        run: |
+          echo "Proof ID: ${{ steps.publish.outputs.proof_id }}"
+          echo "Verification URL: ${{ steps.publish.outputs.receipt_url }}"
+          echo "Receipt SHA256: ${{ steps.publish.outputs.receipt_sha256 }}"
+          echo "Receipt PDF Path: ${{ steps.publish.outputs.receipt_pdf_path }}"
+
+      - name: Verify generated files exist
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          test -f receipt.json
+          test -f receipt.sha256
+          test -f "${{ steps.publish.outputs.receipt_pdf_path }}"
+
+          echo "Verified files:"
+          ls -l receipt.json receipt.sha256 "${{ steps.publish.outputs.receipt_pdf_path }}"
+
+      - name: Upload publish receipt artifacts
+        uses: actions/upload-artifact@v6
+        with:
+          name: publish-receipt-${{ github.run_id }}
+          if-no-files-found: error
+          path: |
+            receipt.json
+            receipt.sha256
+            ${{ steps.publish.outputs.receipt_pdf_path }}
+
+      - name: Publish Verification Summary
+        shell: bash
+        run: |
+          echo "## GetIntegrity Publish Receipt Demo" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Proof ID:** ${{ steps.publish.outputs.proof_id }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Verification URL:** ${{ steps.publish.outputs.receipt_url }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Receipt SHA256:** ${{ steps.publish.outputs.receipt_sha256 }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Receipt PDF Path:** ${{ steps.publish.outputs.receipt_pdf_path }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Artifact Bundle:** publish-receipt-${{ github.run_id }}" >> $GITHUB_STEP_SUMMARY
