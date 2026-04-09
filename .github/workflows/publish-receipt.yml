@@ -17,7 +17,7 @@ jobs:
 
       - name: Generate Publish Receipt
         id: publish
-        uses: GetIntegrityAPI/proof-of-publish@v1
+        uses: GetIntegrityAPI/proof-of-publish@main
         with:
           api_key: ${{ secrets.GI_API_KEY }}
 
