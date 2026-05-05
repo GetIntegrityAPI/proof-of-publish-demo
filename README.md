@@ -225,6 +225,6 @@ This separation is intentional:
 
 - [GetIntegrityAPI](https://getintegrityapi.com)
 - [GetIntegrityAPI Proof of Publish Action](https://github.com/GetIntegrityAPI/proof-of-publish)
-- [Developer Guide](https://getintegrityapi.com/docs)
-- [Interactive API Reference](https://getintegrityapi.com/api)
-- [Proof Verification](https://getintegrityapi.com/verify)
+- [Developer Guide](https://getintegrityapi.com/#developer-guide)
+- [Interactive API Reference](https://api.getintegrityapi.com/docs/)
+- [Proof Verification](https://getintegrityapi.com/#verify)
