@@ -1,27 +1,77 @@
-# Proof of Publish Demo
+# GetIntegrityAPI Proof of Publish Demo
 
-This repository demonstrates how to use `GetIntegrityAPI/proof-of-publish@v1` in a separate consumer GitHub repository.
+This repository demonstrates how to use [`GetIntegrityAPI/proof-of-publish@v1`](https://github.com/GetIntegrityAPI/proof-of-publish) from a separate consumer GitHub repository.
 
 It shows the normal customer onboarding model:
 
-1. Add `GI_API_KEY` as a GitHub Actions secret
-2. Run the workflow in `.github/workflows/publish-receipt.yml`
-3. Generate a `proof_id`
-4. Open a public `receipt_url`
-5. Download the generated artifact bundle
+1. Add `GI_API_KEY` as a GitHub Actions secret.
+2. Run the workflow in `.github/workflows/publish-receipt.yml`.
+3. Generate a `proof_id`.
+4. Open a public `receipt_url`.
+5. Download the generated artifact bundle.
 
-Latest successful demo proof: [View public verification receipt](https://api.getintegrityapi.com/verify/e3cf3286-3112-4e55-be05-647eea265182)
+This demo is intentionally separate from the main Action repository.
 
-## What this demo shows
+The main repository hosts the Action.  
+This repository shows how a customer or consumer repository uses it.
+
+---
+
+## Latest Demo Proof
+
+The latest successful demo run produced a public verification receipt and downloadable evidence artifacts.
+
+| Item | Value |
+| --- | --- |
+| Proof ID | `2558d4d1-7858-4ea6-ad8e-37d276dad521` |
+| Repository | `GetIntegrityAPI/proof-of-publish-demo` |
+| Workflow | `Publish Receipt Demo` |
+| Run number | `9` |
+| Commit | `79b32ecbf051bc02e089a2a4620709ddd48aba95` |
+| Verification URL | [View public verification receipt](https://api.getintegrityapi.com/verify/2558d4d1-7858-4ea6-ad8e-37d276dad521) |
+
+---
+
+## Example Artifact Bundle
+
+A successful workflow run generates an evidence bundle containing:
+
+| Artifact | Purpose |
+| --- | --- |
+| [`receipt.json`](https://assets.getintegrityapi.com/Website-images/PDFs/Example_Publish_Proof_Receipt.json) | Canonical machine-readable proof receipt |
+| [`receipt.sha256`](https://assets.getintegrityapi.com/Website-images/PDFs/receipt.sha256) | SHA-256 digest for offline integrity verification |
+| [`receipt.pdf`](https://assets.getintegrityapi.com/Website-images/PDFs/Example_Publish_Proof_Receipt.pdf) | Human-readable receipt for audit, review, and compliance evidence |
+
+These artifacts can be retained with:
+
+- release records
+- deployment evidence
+- compliance documentation
+- audit evidence packages
+- software supply-chain archives
+
+---
+
+## What This Demo Shows
 
 This demo repository proves that a consumer GitHub repository can:
 
 - call `GetIntegrityAPI/proof-of-publish@v1`
 - generate a signed publish proof
 - expose a public verification URL
+- produce a `proof_id`
+- produce a SHA-256 receipt digest
 - upload `receipt.json`, `receipt.sha256`, and `receipt.pdf` as workflow artifacts
+- publish a workflow summary containing the proof outputs
 
-## Demo usage note
+In simple terms:
+
+> The Action creates the proof.  
+> This demo shows how a customer repository uses it.
+
+---
+
+## Demo Usage Note
 
 This repository includes previously generated proof receipts and artifact bundles for review.
 
@@ -31,13 +81,15 @@ Running the workflow manually creates a new publish receipt and consumes one usa
 
 To generate your own publish receipt, fork this repository, add your own `GI_API_KEY` as a GitHub Actions secret, and run the workflow in your fork.
 
-## Workflow file
+---
+
+## Workflow File
 
 This repository uses:
 
 ```yaml
 uses: GetIntegrityAPI/proof-of-publish@v1
-````
+```
 
 The workflow lives at:
 
@@ -45,7 +97,18 @@ The workflow lives at:
 .github/workflows/publish-receipt.yml
 ```
 
-## Secret required
+A typical workflow run:
+
+1. checks out the repository
+2. calls the GetIntegrityAPI Proof of Publish Action
+3. receives a `proof_id`, `receipt_url`, and `receipt_sha256`
+4. confirms generated receipt files exist
+5. uploads the receipt artifact bundle
+6. writes the proof details to the GitHub Actions job summary
+
+---
+
+## Secret Required
 
 Before running the workflow, add this repository secret:
 
@@ -59,64 +122,109 @@ Path in GitHub:
 Settings → Secrets and variables → Actions → New repository secret
 ```
 
+Use a scoped key with the minimum permissions required for the demo workflow.
+
 For public demos, use a dedicated demo or sandbox key. Do not use a production customer key in public demo repositories.
 
-## What you get after a successful run
+Never place API keys directly in workflow files, README files, screenshots, issues, or public logs.
+
+---
+
+## What You Get After a Successful Run
 
 Each successful workflow run produces:
 
-* `proof_id`
-* `receipt_url`
-* `receipt_sha256`
-* `receipt.pdf`
-* an artifact bundle containing:
+- `proof_id`
+- `receipt_url`
+- `receipt_sha256`
+- `receipt.pdf`
+- an uploaded artifact bundle containing:
+  - `receipt.json`
+  - `receipt.sha256`
+  - `receipt.pdf`
 
-  * `receipt.json`
-  * `receipt.sha256`
-  * `receipt.pdf`
+The public verification URL is the primary online verification surface.
 
-## Verification model
+The artifact bundle is the recommended evidence package for retention, audit review, compliance-supporting workflows, and offline integrity checks.
+
+---
+
+## Verification Model
 
 Proofs generated by this demo can be verified in multiple ways.
 
-### Public verification URL
+### 1. Public Verification URL
 
-Open the `receipt_url` from the workflow summary, or use the latest demo receipt linked at the top of this README.
+Open the `receipt_url` from the workflow summary, or use the latest demo receipt linked at the top of this README:
 
-### GitHub workflow artifacts
+```text
+https://api.getintegrityapi.com/verify/2558d4d1-7858-4ea6-ad8e-37d276dad521
+```
 
-Download the uploaded artifact bundle from the Actions run.
+This provides a public verification surface for review and sharing.
 
-### Offline verification
+### 2. GitHub Workflow Artifacts
 
-Preserve:
+Download the uploaded artifact bundle from the GitHub Actions run.
 
-* `receipt.json`
-* `receipt.sha256`
+The bundle contains:
 
-Then verify the SHA-256 digest locally and verify the signed proof using the published public keys.
+```text
+receipt.json
+receipt.sha256
+receipt.pdf
+```
 
-## Related repositories
+### 3. Offline Integrity Verification
 
-* Action repository: [GetIntegrityAPI/proof-of-publish](https://github.com/GetIntegrityAPI/proof-of-publish)
-* Demo repository: [GetIntegrityAPI/proof-of-publish-demo](https://github.com/GetIntegrityAPI/proof-of-publish-demo)
+For offline verification workflows, preserve:
 
-## Why this demo exists
+```text
+receipt.json
+receipt.sha256
+```
 
-The main `proof-of-publish` repository hosts the GitHub Action itself.
+Then:
+
+1. verify the SHA-256 digest locally
+2. verify the signed proof using the published GetIntegrityAPI public key material
+
+GetIntegrityAPI public key endpoints:
+
+```text
+https://api.getintegrityapi.com/.well-known/hp-public-key
+https://api.getintegrityapi.com/.well-known/hp-keys
+```
+
+---
+
+## Why This Demo Exists
+
+The main [`GetIntegrityAPI/proof-of-publish`](https://github.com/GetIntegrityAPI/proof-of-publish) repository hosts the GitHub Action itself.
 
 This repository shows the standard consumer-repository onboarding flow in a separate public repo, which is the normal production usage pattern for the Action.
 
-In simple terms:
+This separation is intentional:
 
-```text
-The Action creates the proof.
-This demo shows how a customer repository uses it.
-```
+| Repository | Purpose |
+| --- | --- |
+| [`GetIntegrityAPI/proof-of-publish`](https://github.com/GetIntegrityAPI/proof-of-publish) | Hosts the GitHub Action |
+| [`GetIntegrityAPI/proof-of-publish-demo`](https://github.com/GetIntegrityAPI/proof-of-publish-demo) | Demonstrates customer-style usage in a consumer repository |
 
-## Learn more
+---
 
+## Related Repositories
+
+- [Action repository](https://github.com/GetIntegrityAPI/proof-of-publish)
+- [Demo repository](https://github.com/GetIntegrityAPI/proof-of-publish-demo)
+- [GitHub Marketplace listing](https://github.com/marketplace/actions/getintegrityapi-proof-of-publish)
+
+---
+
+## Learn More
+
+- [GetIntegrityAPI](https://getintegrityapi.com)
 - [GetIntegrityAPI Proof of Publish Action](https://github.com/GetIntegrityAPI/proof-of-publish)
-- [Developer Guide](https://getintegrityapi.com/#developer-guide)
-- [Interactive API Reference](https://api.getintegrityapi.com/docs/)
-- [Proof Verification](https://getintegrityapi.com/#verify)
+- [Developer Guide](https://getintegrityapi.com/docs)
+- [Interactive API Reference](https://getintegrityapi.com/api)
+- [Proof Verification](https://getintegrityapi.com/verify)
