@@ -70,6 +70,11 @@ In simple terms:
 > This demo shows how a customer repository uses it.
 
 ---
+<br>
+<p align="center">
+  <img src="https://assets.getintegrityapi.com/Website-images/Release-Integrity-CICD.png" alt="GetIntegrityAPI Proof of Publish for GitHub Actions: release integrity, public verification URL, signed proof, and artifact bundle" width="100%">
+</p>
+
 
 ## Demo Usage Note
 
